@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Task & Habit Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <h1 class="app-name">Dynamic Task & Habit Tracker</h1>
+
+    <div class="header">
+        <p>Total: 5</p>
+        <p>Completed: 4</p>
+        <p>Progess: 60%</p>
+    </div>
+
+    <div class="form-section">
+        <form action="" class="form-data">
+            <input type="text" name="task-title" class="task-input-title" placeholder="Task Title...">
+            <select name="categories" id="categories">
+                <option value="personal">Personal</option>
+                <option value="study">Study</option>
+                <option value="routine">Routine</option>
+            </select>   
+            <select name="priorities" id="priorities">
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+            <button type="submit">Add</button>
+        </form>
+    </div>
+
+    <div class="controls-bar">
+        <div class="filter-group">
+            <span class="control-label">Filter: </span>
+            <div class="filter-buttons">
+                <button type="button" class="filter-btn active">All</button>
+                <button type="button" class="filter-btn">Active</button>
+                <button type="button" class="filter-btn">Completed</button>
+            </div>
+        </div>
+        <div class="sort-group">
+            <label for="sort-select" class="control-label">Sort:</label>
+            <select name="" id="sort-select" class="sort-select">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="priority-high">Priority(High to Low)</option>
+            </select>
+        </div>
+
+        <div class="task-list">
+            <div class="task-item">
+                <div class="task-left">
+                    <input type="checkbox" name="checkbox" id="" checked>
+                    <label for="" class="task-title">Buy groceries</label>
+                </div>
+                <div class="task-badges">
+                    <span>Personal</span>
+                    <span>High</span>
+                </div>
+                <div class="task-actions">
+                    <button>Edit</button>
+                    <button>&times;</button>
+                </div>
+            </div>
+
+            <div class="task-item">
+                <div class="task-left">
+                    <input type="checkbox" name="checkbox" id="" checked>
+                    <label for="" class="task-title">Finish Cs backend security</label>
+                </div>
+                <div class="task-badges">
+                    <span>Study</span>
+                    <span>High</span>
+                </div>
+                <div class="task-actions">
+                    <button>Edit</button>
+                    <button>&times;</button>
+                </div>
+            </div>
+
+            <div class="task-item">
+                <div class="task-left">
+                    <input type="checkbox" name="checkbox" id="" checked>
+                    <label for="" class="task-title">Read 20 pages</label>
+                </div>
+                <div class="task-badges">
+                    <span>Routine</span>
+                    <span>Low</span>
+                </div>
+                <div class="task-actions">
+                    <button>Edit</button>
+                    <button>&times;</button>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</body>
+</html>

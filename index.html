@@ -12,8 +12,8 @@
 
     <div class="header">
         <p>Total: <span class="js-total-tasks"></span></p>
-        <p>Completed: <span class="js-completed-tasks">3</span></p>
-        <p>Progess: <span>78%</span></p>
+        <p>Completed: <span class="js-completed-tasks"></span></p>
+        <p>Progess: <span class="js-progress">78%</span></p>
     </div>
     
     <div class="form-section js-form-section">
@@ -38,11 +38,12 @@
         <div class="filter-group">
             <span class="control-label">Filter:</span>
             <div class="filter-buttons">
-                <button type="button" class="filter-btn active">All</button>
-                <button type="button" class="filter-btn">Active</button>
-                <button type="button" class="filter-btn">Completed</button>
+                <button type="button" class="filter-btn active" data-filter="all">All</button>
+                <button type="button" class="filter-btn" data-filter="active">Active</button>
+                <button type="button" class="filter-btn" data-filter="completed">Completed</button>
             </div>
         </div>
+
         <div class="sort-group">
             <label for="sort-select" class="control-label">Sort:</label>
             <select name="" id="sort-select" class="sort-select">

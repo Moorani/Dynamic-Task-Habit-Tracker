@@ -1,15 +1,19 @@
 
-const dataArray = getFromLocalStorage() || [];
-
-renderTaskItems();
-
-document.querySelector('.js-total-tasks').innerHTML = `${totalTasks()}`;
+let dataArray = getFromLocalStorage() || [];
+let currentFilter = 'all';
 
 
 const formData = document.querySelector('.js-form-data');
 const inputElement = document.querySelector('.js-task-input');
 const selectCategories = document.getElementById('categories');
 const selectPriorities = document.getElementById('priorities');
+
+renderTaskItems();
+
+document.querySelector('.js-total-tasks').innerHTML = `${totalTasks()}`;
+document.querySelector('.js-completed-tasks').innerHTML = `${completedTasks()}`;
+document.querySelector('.js-progress').innerHTML = `${calculateProgress()}%`;
+
 
 formData.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -22,7 +26,7 @@ function addToList() {
     const categoryValue = selectCategories.value;
     const priorityValue = selectPriorities.value;
 
-    dataArray.push({inputValue, categoryValue, priorityValue});
+    dataArray.push({inputValue, categoryValue, priorityValue, 'is-complete': false});
     saveToLocalStorage();
     inputElement.value = '';
     renderTaskItems();
@@ -93,13 +97,29 @@ function renderTaskItems () {
 
     document.querySelector('.js-total-tasks').innerHTML = `${totalTasks()}`;
 
-    dataArray.forEach((input, index) => {
-        
+    const filteredTasks = dataArray.filter((task) => {
+        if (currentFilter === 'active') {
+            return task['is-complete'] !== true;
+        }
+        if (currentFilter === 'completed') {
+            return task['is-complete'] === true;
+        }
+
+        return true;
+    })
+
+    filteredTasks.forEach((input, index) => {
+
+        const completedTask = input['is-complete'] === true ? 'isChecked' : '';
+        const isAttributeChecked = input['is-complete'] === true ? 'checked' : '';
+
+        const textDecoration = input['is-complete'] === true ? 'line-through' : 'none';
+ 
         taskItemHtml += `
-            <div class="task-item js-task-item" data-index="${index}">
+            <div class="task-item js-task-item ${completedTask}" data-index="${index}">
                 <div class="task-left">
-                    <input type="checkbox" name="checkbox" class="js-checkbox">
-                    <label for="" class="task-title js-task-title">${input.inputValue}</label>
+                    <input type="checkbox" name="checkbox" class="js-checkbox" ${isAttributeChecked}>
+                    <label for="" class="task-title js-task-title" style="text-decoration: ${textDecoration}">${input.inputValue}</label>
                 </div>
                 <div class="task-badges">
                     <span>${input.categoryValue}</span>
@@ -118,6 +138,7 @@ function renderTaskItems () {
 
 
 const taskList= document.querySelector('.js-task-list');
+
 taskList.addEventListener('click', (e) => {
     const taskItem = e.target.closest('.js-task-item'); 
     const index = Number(taskItem.dataset.index); 
@@ -135,18 +156,43 @@ taskList.addEventListener('click', (e) => {
 
     if (e.target.matches('.js-checkbox')) {
         const taskTitle = taskItem.querySelector('.js-task-title');
-        taskTitle.style.textDecoration = "line-through";
-        taskItem.classList.toggle("isChecked");
-        
-        setTimeout(() => {
-            const freshIndex = Number(taskItem.dataset.index);
 
-            dataArray.splice(freshIndex, 1);
+        if (e.target.checked) {
+            taskTitle.style.textDecoration = "line-through";
+            taskItem.classList.add("isChecked");
+            dataArray[index]['is-complete'] = true;
             saveToLocalStorage();
-            renderTaskItems();
-        }, 3000);
+            document.querySelector('.js-completed-tasks').innerHTML = `${completedTasks()}`;
+            document.querySelector('.js-progress').innerHTML = `${calculateProgress()}%`;
+        }
+        else {
+            taskTitle.style.textDecoration = 'none';
+            taskItem.classList.remove("isChecked");
+            dataArray[index]['is-complete'] = false;
+            saveToLocalStorage();
+            document.querySelector('.js-completed-tasks').innerHTML = `${completedTasks()}`;
+            document.querySelector('.js-progress').innerHTML = `${calculateProgress()}%`;
+        }
     }
     
+})
+
+
+const controlBar = document.querySelector('.controls-bar');
+const filterBtns = document.querySelectorAll('.filter-btn');
+
+controlBar.addEventListener('click', (e) => {
+   const btn = e.target.closest('.filter-btn');
+   if(!btn) return;
+
+   filterBtns.forEach((btn) => {
+    btn.classList.remove('active');
+   })
+
+   btn.classList.add('active');
+
+   currentFilter = btn.dataset.filter;
+   renderTaskItems();
 })
    
 
@@ -162,7 +208,22 @@ function totalTasks() {
     return dataArray.length;
 }
 
+function completedTasks() {
+    let count = 0;
 
-// function completedTasks() {
-//     let count;
-// }
+    dataArray.forEach((task) => {
+        if (task['is-complete'] === true) {
+            count++;
+        }
+    })
+
+    return count;
+}
+
+function calculateProgress () {
+    const total = totalTasks();
+    const completed = completedTasks();
+
+    const progress = ((completed/total)*100).toFixed(0);
+    return progress;
+}

@@ -280,6 +280,12 @@ select {
 }
 
 
+.filter-group button.active {
+    background-color: gray;
+    color: white;
+}
+
+
 
 
 

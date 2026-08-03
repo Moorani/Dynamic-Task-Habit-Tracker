@@ -8,9 +8,7 @@ const priorityRank = {
 };
 
 let currentFilter = 'all';
-let currentSort = 'newest';
-console.log(dataArray);
-
+let currentSort = 'oldest';
 
 const formData = document.querySelector('.js-form-data');
 const inputElement = document.querySelector('.js-task-input');
@@ -122,7 +120,7 @@ function getVisibleTasks() {
         if (currentSort === 'priority-high') {
             return priorityRank[b.priorityValue] - priorityRank[a.priorityValue];
         }
-        return 0
+        return 0;
     })
 
     return sortedTasks;

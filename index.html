@@ -11,14 +11,15 @@
     <h1 class="app-name">Dynamic Task & Habit Tracker</h1>
 
     <div class="header">
-        <p>Total: 5</p>
-        <p>Completed: 4</p>
-        <p>Progess: 60%</p>
+        <p>Total: <span class="js-total-tasks"></span></p>
+        <p>Completed: <span class="js-completed-tasks">3</span></p>
+        <p>Progess: <span>78%</span></p>
     </div>
-
-    <div class="form-section">
-        <form action="" class="form-data">
-            <input type="text" name="task-title" class="task-input-title" placeholder="Task Title...">
+    
+    <div class="form-section js-form-section">
+        <h3 id="formTitle">Add New Task</h3> 
+        <form action="" class="form-data js-form-data">
+            <input type="text" name="task-title" class="task-input-title js-task-input" placeholder="Task Title...">
             <select name="categories" id="categories">
                 <option value="personal">Personal</option>
                 <option value="study">Study</option>
@@ -35,7 +36,7 @@
 
     <div class="controls-bar">
         <div class="filter-group">
-            <span class="control-label">Filter: </span>
+            <span class="control-label">Filter:</span>
             <div class="filter-buttons">
                 <button type="button" class="filter-btn active">All</button>
                 <button type="button" class="filter-btn">Active</button>
@@ -51,56 +52,17 @@
             </select>
         </div>
 
-        <div class="task-list">
-            <div class="task-item">
-                <div class="task-left">
-                    <input type="checkbox" name="checkbox" id="" checked>
-                    <label for="" class="task-title">Buy groceries</label>
-                </div>
-                <div class="task-badges">
-                    <span>Personal</span>
-                    <span>High</span>
-                </div>
-                <div class="task-actions">
-                    <button>Edit</button>
-                    <button>&times;</button>
-                </div>
-            </div>
-
-            <div class="task-item">
-                <div class="task-left">
-                    <input type="checkbox" name="checkbox" id="" checked>
-                    <label for="" class="task-title">Finish Cs backend security</label>
-                </div>
-                <div class="task-badges">
-                    <span>Study</span>
-                    <span>High</span>
-                </div>
-                <div class="task-actions">
-                    <button>Edit</button>
-                    <button>&times;</button>
-                </div>
-            </div>
-
-            <div class="task-item">
-                <div class="task-left">
-                    <input type="checkbox" name="checkbox" id="" checked>
-                    <label for="" class="task-title">Read 20 pages</label>
-                </div>
-                <div class="task-badges">
-                    <span>Routine</span>
-                    <span>Low</span>
-                </div>
-                <div class="task-actions">
-                    <button>Edit</button>
-                    <button>&times;</button>
-                </div>
-            </div>
-
-
+        <div class="task-list js-task-list">
+            
         </div>
 
     </div>
 
+    <div class="popup-section js-popup-section">
+    
+    </div>
+
+
+    <script src="app.js"></script>
 </body>
 </html>

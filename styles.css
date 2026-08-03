@@ -13,8 +13,9 @@ body {
     margin: 20px;
 }
 
+
 .header {
-    min-width: 600px;
+    min-width: 700px;
     background: linear-gradient(45deg, #1e272e, #48627a) border-box;
     color: white;
     display: flex;
@@ -22,7 +23,6 @@ body {
     justify-content: center;
     column-gap: 60px;
     font-size: 18px;
-    font-weight: 700;
     padding: 20px;
     border-radius: 4px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
@@ -31,12 +31,27 @@ body {
     margin: 0;
 }
 
-.form-section {
+.header span {
+    font-weight: 700;
+}
+
+.form-section, .popup-section {
     margin-top: 20px;
     padding: 20px;
-    min-width: 600px;
-    border-radius: 4px;
+    min-width: 700px;
+    border-bottom: 1px solid #ccc;
+    border-radius: 4px 4px 0 0;
     background: linear-gradient(45deg, #1e272e, #48627a) border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+#formTitle, #popupTitle {
+    color: white;
 }
 
 .form-data {
@@ -44,32 +59,228 @@ body {
     flex-direction: row;
     column-gap: 10px;
     justify-content: center;
+    align-items: center;
+
 }
+
+button[type="submit"], button[type="button"] {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button[type="button"] {
+    margin-top: 20px;
+    background-color: burlywood;
+    border: none;
+}
+
 
 .task-input-title {
     padding: 10px 20px;
     width: 200px;
     font-size: 14px;
+    color: white;
     background-color: rgb(0 0 0 / 20%); 
-    border: 0.8px solid white;
+    border: 1px solid #ccc;
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.4s ease-in-out;
 }
 
-.task-input-title:focus, #categories:focus {
+.task-input-title::placeholder {
+    color: #ccccccd5;
+    font-size: 14px;
+}
+.task-input-title:focus {
     outline: 1px solid white;
     color: white;
     font-weight: 400;
 }
 
-#categories {
+select {
+    appearance: base-select;
+    font-size: 14px;
     cursor: pointer;
     padding: 10px 20px;
     background-color: rgb(0 0 0 / 20%); 
     border: 0.8px solid white;
+    border: 1px solid #ccc;
     border-radius: 4px;
     color: white;
-    /* transition: all 0.4s ease-in-out; */
+
+    &:focus-visible {
+        outline: 1px solid white;
+    }
+    
+    &::picker(select) {
+        appearance: base-select;
+        padding: 10px 20px;
+        width: auto;
+        border: none;
+        border-radius: 4px;
+        margin-top: 10px;
+        font-size: 14px;
+        color: white;
+        background-color: rgb(0 0 0 / 80%); 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: 1s ease;
+        
+       
+    }
+
+    option {
+        padding: 4px 10px;
+        border-radius: 4px;
+        margin: 2px;
+        justify-content: space-between;
+
+        &:checked {
+            background-color: #ccc;
+            color: black;
+        }
+
+        &:hover {
+            background-color: #e2e8f0; /* Native hover states on options! */
+            color: black;
+        }
+
+        &::checkmark {
+            font-weight: 800;
+            order: 1;
+            margin-left: 20px;
+        }
+    }
+
+    
+
+    &::picker-icon {
+        margin-left: 15px;
+        transition: 150ms ease;
+    }
+
+    &:open::picker-icon {
+        rotate: 180deg;
+    }
 }
+
+
+.controls-bar {
+    width: 700px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 20px;
+    border-radius: 0 0 4px 4px;
+    background: linear-gradient(225deg, #1e272e, #48627a) border-box;
+
+    & .filter-group, .sort-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        column-gap: 10px;
+
+    }
+
+    .filter-btn, .task-actions button {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 2px;
+        margin: 3px;
+        font-size: 14px;
+        font-weight: 500;
+        background-color: #ccc;
+        cursor: pointer;
+    }
+
+    .control-label {
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    & > div:last-child {
+        width: 100%;
+        margin-top: 20px;
+
+        & .task-item {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); 
+        }
+
+        & .task-item.isChecked {
+            background-color: #1e272e;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            color: #48627a;
+        }
+
+        .task-left {
+
+            width: 300px;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 10px;
+
+            & input {
+                margin-top: 6px;
+                width: 15px;
+                height: 15px;
+            }
+        }
+
+        .task-badges {
+            width: 150px;
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            gap: 10px;
+
+        }
+
+        .task-badges span {
+            border: 1px solid #ccc;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 400;
+            color: #ccc;
+        }
+
+    }
+}
+
+.popup-section {
+    display: none;
+}
+
+.popup-section.is-popup {
+    display: flex;
+    position: fixed;
+    width: 80vw;
+    height: 80vh;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Gives it depth */
+    z-index: 9999; /* Forces it to stay on top of everything */
+    border-radius: 4px;
+}
+
+
+
+
+
 

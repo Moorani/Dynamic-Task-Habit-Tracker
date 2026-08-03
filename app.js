@@ -1,6 +1,15 @@
 
 let dataArray = getFromLocalStorage() || [];
+
+const priorityRank = {
+  'high': 3,
+  'medium': 2,
+  'low': 1
+};
+
 let currentFilter = 'all';
+let currentSort = 'newest';
+console.log(dataArray);
 
 
 const formData = document.querySelector('.js-form-data');
@@ -26,7 +35,7 @@ function addToList() {
     const categoryValue = selectCategories.value;
     const priorityValue = selectPriorities.value;
 
-    dataArray.push({inputValue, categoryValue, priorityValue, 'is-complete': false});
+    dataArray.push({inputValue, categoryValue, priorityValue, 'is-complete': false, createdAt: Date.now()});
     saveToLocalStorage();
     inputElement.value = '';
     renderTaskItems();
@@ -91,12 +100,7 @@ function editList(index) {
 }
 
 
-
-function renderTaskItems () {
-    let taskItemHtml = ``;
-
-    document.querySelector('.js-total-tasks').innerHTML = `${totalTasks()}`;
-
+function getVisibleTasks() {
     const filteredTasks = dataArray.filter((task) => {
         if (currentFilter === 'active') {
             return task['is-complete'] !== true;
@@ -108,7 +112,31 @@ function renderTaskItems () {
         return true;
     })
 
-    filteredTasks.forEach((input, index) => {
+    const sortedTasks = filteredTasks.slice().sort((a, b) => {
+        if (currentSort === 'oldest') {
+            return a.createdAt - b.createdAt;
+        }
+        if (currentSort === 'newest') {
+            return b.createdAt - a.createdAt;
+        }
+        if (currentSort === 'priority-high') {
+            return priorityRank[b.priorityValue] - priorityRank[a.priorityValue];
+        }
+        return 0
+    })
+
+    return sortedTasks;
+}
+
+
+function renderTaskItems () {
+    let taskItemHtml = ``;
+
+    document.querySelector('.js-total-tasks').innerHTML = `${totalTasks()}`;
+
+    const sortedTasks = getVisibleTasks();
+
+    sortedTasks.forEach((input, index) => {
 
         const completedTask = input['is-complete'] === true ? 'isChecked' : '';
         const isAttributeChecked = input['is-complete'] === true ? 'checked' : '';
@@ -178,12 +206,14 @@ taskList.addEventListener('click', (e) => {
 })
 
 
-const controlBar = document.querySelector('.controls-bar');
+const  filterGroup = document.querySelector('.filter-group');
 const filterBtns = document.querySelectorAll('.filter-btn');
 
-controlBar.addEventListener('click', (e) => {
+
+filterGroup.addEventListener('click', (e) => {
    const btn = e.target.closest('.filter-btn');
-   if(!btn) return;
+
+   if (!btn) return;
 
    filterBtns.forEach((btn) => {
     btn.classList.remove('active');
@@ -192,8 +222,21 @@ controlBar.addEventListener('click', (e) => {
    btn.classList.add('active');
 
    currentFilter = btn.dataset.filter;
+   
    renderTaskItems();
 })
+
+const sortGroup = document.querySelector('.sort-group');
+
+sortGroup.addEventListener('change', (e) => {
+    const sortBtn = e.target.closest('.js-sort-select');
+    currentSort = sortBtn.value;
+    renderTaskItems();
+})
+
+
+
+
    
 
 function saveToLocalStorage() {

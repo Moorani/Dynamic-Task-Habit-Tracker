@@ -17,10 +17,6 @@ const selectPriorities = document.getElementById('priorities');
 
 renderTaskItems();
 
-document.querySelector('.js-total-tasks').innerHTML = `${totalTasks()}`;
-document.querySelector('.js-completed-tasks').innerHTML = `${completedTasks()}`;
-document.querySelector('.js-progress').innerHTML = `${calculateProgress()}%`;
-
 
 formData.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -28,19 +24,29 @@ formData.addEventListener('submit', (event) => {
 })
 
 function addToList() {
+    const title = inputElement.value.trim();
+    if(!title) {
+        inputElement.focus();
+        return;
+    }
 
-    const inputValue = inputElement.value;
-    const categoryValue = selectCategories.value;
-    const priorityValue = selectPriorities.value;
+    const task = {
+        id: crypto.randomUUID(),
+        title: title,
+        category: selectCategories.value,
+        priority: selectPriorities.value,
+        isComplete: false,
+        createdAt: Date.now()
+    }
 
-    dataArray.push({inputValue, categoryValue, priorityValue, 'is-complete': false, createdAt: Date.now()});
+    dataArray.push(task);
     saveToLocalStorage();
     inputElement.value = '';
     renderTaskItems();
 }
 
 
-function editList(index) {
+function editList(id) {
     let editPopupHtml = ``;
 
     editPopupHtml = `
@@ -70,30 +76,57 @@ function editList(index) {
     const inputElement = document.querySelector('.js-popup-task-input');
     const selectCategories = document.getElementById('popup-categories');
     const selectPriorities = document.getElementById('popup-priorities');
+    const cancelBtn = document.getElementById('cancelBtn');
 
-    inputElement.value = dataArray[index].inputValue;
-    selectCategories.value = dataArray[index].categoryValue;
-    selectPriorities.value = dataArray[index].priorityValue;
+    const task = dataArray.find(task => task.id === id);
+
+    inputElement.value = task.title;
+    selectCategories.value = task.category;
+    selectPriorities.value = task.priority;
+
+    function closePopup() {
+        popupSection.classList.remove('is-popup');
+        inputElement.value = '';
+        document.removeEventListener('keydown', handleEscape);
+    }
+
+    function handleEscape(e) {
+    if (e.key === 'Escape') {
+        closePopup();
+    }
+}
 
     popupFormData.addEventListener('submit', (event) => {
+        event.preventDefault();
 
-        const inputValue = inputElement.value;
-        const categoryValue = selectCategories.value;
-        const priorityValue = selectPriorities.value;
+        task.title = inputElement.value;
+        task.category = selectCategories.value;
+        task.priority = selectPriorities.value;
 
-        dataArray[index] = {inputValue, categoryValue, priorityValue};
         saveToLocalStorage();
-        popupSection.classList.remove('is-popup');
+        closePopup();
         renderTaskItems();
     })
 
 
 
     cancelBtn.addEventListener('click', () => {
-        popupSection.classList.remove('is-popup');
-        inputElement.value = '';
+        closePopup();
     })
 
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closePopup();
+        }
+    })
+
+    popupSection.addEventListener('click', (e) => {
+        if (e.target === popupSection) {
+            closePopup();
+        }
+    });
+
+    document.addEventListener('keydown', handleEscape);
 
 }
 
@@ -101,10 +134,10 @@ function editList(index) {
 function getVisibleTasks() {
     const filteredTasks = dataArray.filter((task) => {
         if (currentFilter === 'active') {
-            return task['is-complete'] !== true;
+            return task.isComplete !== true;
         }
         if (currentFilter === 'completed') {
-            return task['is-complete'] === true;
+            return task.isComplete === true;
         }
 
         return true;
@@ -118,7 +151,7 @@ function getVisibleTasks() {
             return b.createdAt - a.createdAt;
         }
         if (currentSort === 'priority-high') {
-            return priorityRank[b.priorityValue] - priorityRank[a.priorityValue];
+            return priorityRank[b.priority] - priorityRank[a.priority];
         }
         return 0;
     })
@@ -128,77 +161,67 @@ function getVisibleTasks() {
 
 
 function renderTaskItems () {
-    let taskItemHtml = ``;
-
-    document.querySelector('.js-total-tasks').innerHTML = `${totalTasks()}`;
 
     const sortedTasks = getVisibleTasks();
 
-    sortedTasks.forEach((input, index) => {
-
-        const completedTask = input['is-complete'] === true ? 'isChecked' : '';
-        const isAttributeChecked = input['is-complete'] === true ? 'checked' : '';
-
-        const textDecoration = input['is-complete'] === true ? 'line-through' : 'none';
- 
-        taskItemHtml += `
-            <div class="task-item js-task-item ${completedTask}" data-index="${index}">
+    const taskItemHtml = sortedTasks.map((task) => {
+        const completedTask = task.isComplete === true ? 'isChecked' : '';
+        const isAttributeChecked = task.isComplete === true ? 'checked' : '';
+        
+        return `
+            <div class="task-item js-task-item ${completedTask}" data-id = "${task.id}">
                 <div class="task-left">
                     <input type="checkbox" name="checkbox" class="js-checkbox" ${isAttributeChecked}>
-                    <label for="" class="task-title js-task-title" style="text-decoration: ${textDecoration}">${input.inputValue}</label>
+                    <label for="" class="task-title js-task-title">${task.title}</label>
                 </div>
                 <div class="task-badges">
-                    <span>${input.categoryValue}</span>
-                    <span>${input.priorityValue}</span>
+                    <span>${task.category}</span>
+                    <span>${task.priority}</span>
                 </div>
                 <div class="task-actions">
                     <button class="js-edit-button">Edit</button>
-                    <button class="js-delete-btn">&times;</button>
+                    <button class="js-delete-btn" aria-label="Delete task">&times;</button>
                 </div>
             </div>
         `
-    })
+    }).join('');
+
     
     document.querySelector('.js-task-list').innerHTML = taskItemHtml;
+    updateStats();
 }
 
 
 const taskList= document.querySelector('.js-task-list');
 
 taskList.addEventListener('click', (e) => {
-    const taskItem = e.target.closest('.js-task-item'); 
-    const index = Number(taskItem.dataset.index); 
+    const taskItem = e.target.closest('.js-task-item');
+    if (!taskItem) return;
+
+    const id = taskItem.dataset.id; 
 
     if (e.target.matches('.js-delete-btn')) {
-        dataArray.splice(index, 1);
+        dataArray = dataArray.filter(task => task.id !== id);
         saveToLocalStorage();
         renderTaskItems();
+        return;
     }
 
     if (e.target.matches('.js-edit-button')) {
-        editList(index);
+        editList(id);
+        return;
     }
 
 
     if (e.target.matches('.js-checkbox')) {
-        const taskTitle = taskItem.querySelector('.js-task-title');
+        const task = dataArray.find(task => task.id === id);
 
-        if (e.target.checked) {
-            taskTitle.style.textDecoration = "line-through";
-            taskItem.classList.add("isChecked");
-            dataArray[index]['is-complete'] = true;
-            saveToLocalStorage();
-            document.querySelector('.js-completed-tasks').innerHTML = `${completedTasks()}`;
-            document.querySelector('.js-progress').innerHTML = `${calculateProgress()}%`;
-        }
-        else {
-            taskTitle.style.textDecoration = 'none';
-            taskItem.classList.remove("isChecked");
-            dataArray[index]['is-complete'] = false;
-            saveToLocalStorage();
-            document.querySelector('.js-completed-tasks').innerHTML = `${completedTasks()}`;
-            document.querySelector('.js-progress').innerHTML = `${calculateProgress()}%`;
-        }
+        task.isComplete = e.target.checked;
+        taskItem.classList.toggle('isChecked', e.target.checked);
+
+        saveToLocalStorage();
+        updateStats();
+
     }
     
 })
@@ -233,10 +256,6 @@ sortGroup.addEventListener('change', (e) => {
 })
 
 
-
-
-   
-
 function saveToLocalStorage() {
     localStorage.setItem('dataArray', JSON.stringify(dataArray));
 }
@@ -253,7 +272,7 @@ function completedTasks() {
     let count = 0;
 
     dataArray.forEach((task) => {
-        if (task['is-complete'] === true) {
+        if (task.isComplete === true) {
             count++;
         }
     })
@@ -263,8 +282,14 @@ function completedTasks() {
 
 function calculateProgress () {
     const total = totalTasks();
-    const completed = completedTasks();
+    if (total === 0) return 0;
+    
+    return Math.round((completedTasks() / total) * 100);;
+}
 
-    const progress = ((completed/total)*100).toFixed(0);
-    return progress;
+
+function updateStats() {
+    document.querySelector('.js-total-tasks').textContent = totalTasks();
+    document.querySelector('.js-completed-tasks').textContent = completedTasks();
+    document.querySelector('.js-progress').textContent = `${calculateProgress()}%`;
 }

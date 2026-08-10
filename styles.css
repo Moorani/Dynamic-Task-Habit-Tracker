@@ -228,6 +228,9 @@ select {
             padding: 2px 8px;
             color: #48627a;
         }
+        .task-item.isChecked .task-title {
+            text-decoration: line-through;
+        }
 
         .task-left {
 

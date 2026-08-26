@@ -6,6 +6,8 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    background: radial-gradient(ellipse 900px 500px at 50% -10%, #1a2635 0%, transparent 60%), #0d1218;
+    color: white;
 }
 
 .app-name {
@@ -64,7 +66,7 @@ body {
 }
 
 button[type="submit"], button[type="button"] {
-    padding: 12px 25px;
+    padding: 11px 25px;
     border: none;
     border-radius: 4px;
     background-color: white;
@@ -280,6 +282,7 @@ select {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Gives it depth */
     z-index: 9999; /* Forces it to stay on top of everything */
     border-radius: 4px;
+    border-bottom: none;
 }
 
 

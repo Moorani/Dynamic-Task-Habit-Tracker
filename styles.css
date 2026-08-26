@@ -1,5 +1,5 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "IBM Plex Sans", sans-serif;
     margin: 0px;
     display: flex;
     flex-direction: column;
@@ -7,43 +7,76 @@ body {
     justify-content: center;
     height: 100vh;
     background: radial-gradient(ellipse 900px 500px at 50% -10%, #1a2635 0%, transparent 60%), #0d1218;
-    color: white;
+    color: rgb(234, 230, 218);
 }
 
-.app-name {
+.app-details .app-name {
+    font-size: clamp(34px, 5vw, 46px);
     text-align: center;
-    margin: 20px;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.app-details p {
+    margin-bottom: 40px;
+    margin-top: 5px;
+    text-align: center;
+    color: rgb(157, 179, 199);
 }
 
 
 .header {
-    min-width: 700px;
-    background: linear-gradient(45deg, #1e272e, #48627a) border-box;
-    color: white;
+    width: 100%;
+    max-width: 700px;
+    background: linear-gradient(135deg, #1b2530, #263341);
+    border: 1px solid #34445570;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    column-gap: 60px;
+    align-items: center;
+    /* flex-wrap: wrap; */
+    column-gap: 30px;
     font-size: 18px;
     padding: 20px;
     border-radius: 4px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-}
-.header p {
-    margin: 0;
 }
 
-.header span {
-    font-weight: 700;
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+.stat-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: #dba468;
+}
+
+.stat-label {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: rgb(157, 179, 199);
+}
+
+.stat-divider {
+    width: 1px;
+    height: 35px;
+    background-color: #34445570;
 }
 
 .form-section, .popup-section {
     margin-top: 20px;
     padding: 20px;
-    min-width: 700px;
-    border-bottom: 1px solid #ccc;
-    border-radius: 4px 4px 0 0;
-    background: linear-gradient(45deg, #1e272e, #48627a) border-box;
+    width: 100%;
+    max-width: 700px;
+    border: 1px solid #34445570;
+    /* border-bottom: 1px solid #ccc; */
+    border-radius: 4px;
+    background: linear-gradient(135deg, #1b2530, #263341);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -51,58 +84,67 @@ body {
 }
 
 
-
 #formTitle, #popupTitle {
-    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    margin-bottom: 20px;
 }
 
 .form-data {
     display: flex;
     flex-direction: row;
-    column-gap: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
     justify-content: center;
-    align-items: center;
-
+    align-items: stretch;
+    width: 100%;
 }
 
-button[type="submit"], button[type="button"] {
-    padding: 11px 25px;
+button[type="submit"], 
+button[type="button"] {
+    padding: 10px 25px;
     border: none;
     border-radius: 4px;
-    background-color: white;
+    background-color: #dba468;
     color: black;
     font-size: 14px;
     font-weight: 600;
+    letter-spacing: 0.09em;
     cursor: pointer;
+    transition: filter 0.14 ease;
 }
 
 button[type="button"] {
     margin-top: 20px;
-    background-color: burlywood;
+    background-color: #dba468;
     border: none;
 }
 
+button[type="submit"]:hover {
+    filter: brightness(1.08);
+}
 
 .task-input-title {
+    flex: 1 1 200px;
     padding: 10px 20px;
-    width: 200px;
     font-size: 14px;
-    color: white;
+    color: #dba468;
     background-color: rgb(0 0 0 / 20%); 
-    border: 1px solid #ccc;
+    border: 1px solid #34445570;
     border-radius: 4px;
-    cursor: pointer;
     transition: all 0.4s ease-in-out;
 }
 
 .task-input-title::placeholder {
-    color: #ccccccd5;
-    font-size: 14px;
+    color: #9db3c7;
+    font-size: 13px;
+    letter-spacing: 0.05em;
 }
 .task-input-title:focus {
-    outline: 1px solid white;
-    color: white;
-    font-weight: 400;
+    outline: none;
+    border-color: #dba468;
 }
 
 select {
@@ -111,29 +153,34 @@ select {
     cursor: pointer;
     padding: 10px 20px;
     background-color: rgb(0 0 0 / 20%); 
-    border: 0.8px solid white;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 4px;
-    color: white;
+    color: rgb(157, 179, 199);
+    font-size: 14px;
+    border: 1px solid #34445570;
+    transition: filter 0.3s ease;
+
+    &:hover {
+        filter: brightness(1.3);
+    }
 
     &:focus-visible {
-        outline: 1px solid white;
+        outline: 1px solid #dba468;
     }
     
     &::picker(select) {
         appearance: base-select;
         padding: 10px 20px;
         width: auto;
-        border: none;
+        border: 1px solid #34445570;
         border-radius: 4px;
         margin-top: 10px;
         font-size: 14px;
-        color: white;
-        background-color: rgb(0 0 0 / 80%); 
+        color: rgb(234, 230, 218);
+        font-size: 14px;
+        background-color: #1b2530;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: 1s ease;
         
-       
     }
 
     option {
@@ -141,6 +188,7 @@ select {
         border-radius: 4px;
         margin: 2px;
         justify-content: space-between;
+        transition: all 0.4s ease;
 
         &:checked {
             background-color: #ccc;
@@ -173,16 +221,17 @@ select {
 
 
 .controls-bar {
-    width: 700px;
+    width: 100%;
+    max-width: 700px;
+    margin-top: 20px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 10px;
-
     padding: 20px;
-    border-radius: 0 0 4px 4px;
-    background: linear-gradient(225deg, #1e272e, #48627a) border-box;
+    border-radius: 4px;
+    background: linear-gradient(190deg, #1b2530, #263341);
 
     & .filter-group, .sort-group {
         display: flex;
@@ -195,19 +244,30 @@ select {
 
     .filter-btn, .task-actions button {
         padding: 6px 12px;
-        border: none;
-        border-radius: 2px;
+        border-radius: 4px;
         margin: 3px;
         font-size: 14px;
         font-weight: 500;
-        background-color: #ccc;
+        letter-spacing: 0.08em;
+        background-color: #1b2530;
+        color: #9db3c7;
+        border: 2px solid #34445570;
+        box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.45);
         cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover,
+    .task-actions button:hover {
+        filter: brightness(1.13)
     }
 
     .control-label {
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.11em;
+        color: rgb(234, 230, 218);
     }
 
     & > div:last-child {
@@ -219,7 +279,6 @@ select {
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            color: white;
             transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); 
         }
 
@@ -235,7 +294,6 @@ select {
         }
 
         .task-left {
-
             width: 300px;
             display: flex;
             justify-content: start;
@@ -255,16 +313,16 @@ select {
             flex-direction: row;
             justify-content: start;
             gap: 10px;
-
         }
 
         .task-badges span {
-            border: 1px solid #ccc;
+            border: 2px solid #34445570;
             padding: 3px 8px;
             border-radius: 15px;
             font-size: 12px;
             font-weight: 400;
-            color: #ccc;
+            letter-spacing: 0.06em;
+            font-weight: 400;
         }
 
     }
@@ -287,8 +345,9 @@ select {
 
 
 .filter-group button.active {
-    background-color: gray;
-    color: white;
+    background-color: #dba468;
+    color: black;
+    border: none;
 }
 
 

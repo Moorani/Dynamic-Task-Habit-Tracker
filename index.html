@@ -5,15 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Task & Habit Tracker</title>
     <link rel="stylesheet" href="styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
+
 </head>
 <body>
     
-    <h1 class="app-name">Dynamic Task & Habit Tracker</h1>
+    <div class="app-details">
+        <h1 class="app-name">Dynamic Task & Habit Tracker</h1>
+        <p>A running record of tasks and habits, kept one entry at a time.</p>
+    </div>
 
     <div class="header">
-        <p>Total: <span class="js-total-tasks"></span></p>
-        <p>Completed: <span class="js-completed-tasks"></span></p>
-        <p>Progess: <span class="js-progress">78%</span></p>
+        <div class="stat">
+            <span class="stat-value js-total-tasks">0</span>
+            <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat">
+            <span class="stat-value js-completed-tasks">0</span>
+            <span class="stat-label">Completed</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat">
+            <span class="stat-value js-progress">0%</span>
+            <span class="stat-label">Progress</span>
+        </div>
     </div>
     
     <div class="form-section js-form-section">

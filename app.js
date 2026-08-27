@@ -293,3 +293,4 @@ function updateStats() {
     document.querySelector('.js-completed-tasks').textContent = completedTasks();
     document.querySelector('.js-progress').textContent = `${calculateProgress()}%`;
 }
+

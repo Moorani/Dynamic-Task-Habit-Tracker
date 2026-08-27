@@ -77,9 +77,7 @@ The application allows users to create tasks, organize them by category and prio
 
 ## 🖥️ Preview
 
-```md
 ![Dynamic Task & Habit Tracker Preview](./assets/preview.png)
-```
 
 ---
 

@@ -77,13 +77,9 @@ The application allows users to create tasks, organize them by category and prio
 
 ## 🖥️ Preview
 
-> Add a screenshot or GIF of your application here.
-
 ```md
 ![Dynamic Task & Habit Tracker Preview](./assets/preview.png)
 ```
-
-You can replace the placeholder above with an actual screenshot after adding one to your repository.
 
 ---
 

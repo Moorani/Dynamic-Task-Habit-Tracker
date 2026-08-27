@@ -104,7 +104,10 @@ The application does not use a JavaScript framework or external UI library. The 
 ## 📁 Project Structure
 
 ```text
-dynamic-task-habit-tracker/
+Dynamic-Task-Habit-Tracker/
+│
+├── assets/
+│   └── preview.png
 │
 ├── index.html
 ├── styles.css
